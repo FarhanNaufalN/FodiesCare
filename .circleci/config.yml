@@ -6,7 +6,7 @@ orbs:
 jobs:
   test-java:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: circleci/openjdk:17.0-jdk-buster
     steps:
       - checkout
       - run:
@@ -20,10 +20,13 @@ jobs:
           paths:
             - ~/.android/build-cache
             - ~/.android/cache
+      - run:
+          name: Copy local.properties
+          command: echo "sdk.dir=/usr/local/android-sdk-linux" > $HOME/project/local.properties
 
   build:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: circleci/openjdk:17.0-jdk-buster
     steps:
       - checkout
       - restore_cache:
@@ -40,6 +43,9 @@ jobs:
             - ~/.android/build-cache
             - ~/.android/cache
       - run:
+          name: Copy local.properties
+          command: echo "sdk.dir=/usr/local/android-sdk-linux" > $HOME/project/local.properties
+      - run:
           name: Run Build
           command: ./gradlew build
       - store_artifacts:
@@ -48,10 +54,6 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
-      - run:
-          name: Check local.properties
-          command: ls -la $HOME/project
-
       - store_test_results:
           path: app/build/test-results
       - store_artifacts:

@@ -44,7 +44,6 @@ class DetailActivity : AppCompatActivity() {
                     binding.constraintLayout.visibility = View.VISIBLE
                     binding.tvTitle.visibility = View.VISIBLE
                     binding.tvSummary.visibility = View.VISIBLE
-                    binding.tvSummary.visibility = View.VISIBLE
                     setData(it.data)
                 }
                 is Resource.Loading -> {

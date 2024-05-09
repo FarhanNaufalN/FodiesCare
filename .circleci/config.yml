@@ -20,10 +20,7 @@ jobs:
           paths:
             - ~/.android/build-cache
             - ~/.android/cache
-      - run:
-          name: Copy local.properties
-          command: echo "sdk.dir=C:\\\\Users\\\\datap\\\\AppData\\\\Local\\\\Android\\\\Sdk" > $HOME/project/local.properties
-  
+
   build:
     docker:
       - image: cimg/openjdk:17.0
@@ -43,9 +40,6 @@ jobs:
             - ~/.android/build-cache
             - ~/.android/cache
       - run:
-          name: Copy local.properties
-          command: echo "sdk.dir=C:\\\\Users\\\\datap\\\\AppData\\\\Local\\\\Android\\\\Sdk" > $HOME/project/local.properties
-      - run:
           name: Run Build
           command: ./gradlew build
       - store_artifacts:
@@ -54,6 +48,10 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
+      - run:
+          name: Check local.properties
+          command: ls -la $HOME/project
+
       - store_test_results:
           path: app/build/test-results
       - store_artifacts:
